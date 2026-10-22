@@ -13,6 +13,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Show project files
+        run: |
+          pwd
+          ls -la
+          find . -name "*.py" -not -path "./.git/*"
+
+      - name: Ensure main.py exists in root
+        run: |
+          if [ ! -f main.py ]; then
+            FOUND=$(find . -name "*.py" -not -path "./.git/*" -not -path "./build/*" | xargs grep -l "ft.app\|flet.app\|import flet" | head -n 1)
+            echo "Entry point found: $FOUND"
+            if [ -z "$FOUND" ]; then
+              echo "Flet entry point not found!"
+              exit 1
+            fi
+            cp "$FOUND" main.py
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -41,7 +59,7 @@ jobs:
 
       - name: Build Android APK
         run: |
-          flet build apk --project "Bozorov OMR" --description "Bozorov Math Milliy Sertifikat Skaneri" --org "uz.bozorovmath"
+          flet build apk -v --project "Bozorov OMR" --description "Bozorov Math Milliy Sertifikat Skaneri" --org "uz.bozorovmath"
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4

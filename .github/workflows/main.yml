@@ -11,15 +11,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
       - name: Set up Java JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build Android APK
         run: |
-          flet build apk --project "Bozorov OMR" --description "Bozorov Math Milliy Sertifikat Skaneri" --org "uz.bozorovmath" --yes
+          flet build apk --project "Bozorov OMR" --description "Bozorov Math Milliy Sertifikat Skaneri" --org "uz.bozorovmath"
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
